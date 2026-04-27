@@ -196,7 +196,7 @@ class EnhancedChartPanel(ctk.CTkFrame):
         gradient = np.linspace(0, 1, 100).reshape(100, 1)
         self.ax.imshow(
             gradient, 
-            extent=[0, len(data), 0, max(data) * 1.2], 
+            extent=[0, len(data), 0, max(data) * 1.2 if data else 100], 
             aspect='auto', 
             alpha=0.03,
             cmap='viridis'
@@ -254,7 +254,7 @@ class EnhancedChartPanel(ctk.CTkFrame):
         
         # Set dynamic limits with padding
         if data:
-            y_max = max(data) * 1.2
+            y_max = max(data) * 1.2 if max(data) > 0 else 100
             y_min = min(0, min(data) * 0.8)
             self.ax.set_ylim(y_min, y_max)
             self.ax.set_xlim(0, max(10, len(data)))
@@ -275,8 +275,8 @@ class EnhancedChartPanel(ctk.CTkFrame):
         self.ax.tick_params(colors=DesignSystem.TEXT_MUTED, labelsize=8, pad=2)
         
         # Set labels
-        self.ax.set_ylabel(label, color=DesignSystem.TEXT_MUTED, fontsize=8, fontweight='medium')
-        self.ax.set_xlabel('Time (samples)', color=DesignSystem.TEXT_MUTED, fontsize=8, fontweight='medium')
+        self.ax.set_ylabel(label, color=DesignSystem.TEXT_MUTED, fontsize=8, fontweight='bold')
+        self.ax.set_xlabel('Time (samples)', color=DesignSystem.TEXT_MUTED, fontsize=8, fontweight='bold')
         
         # Add current value annotation
         if data:
