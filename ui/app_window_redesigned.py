@@ -12,7 +12,7 @@ from typing import Optional
 from monitor import BatteryMonitor, get_running_processes
 from scorer import calculate_score
 from report import generate_report
-from ui.enhanced_chart_panel import EnhancedChartPanel
+from ui.chart_panel import ChartPanel
 from ui.design_system import DesignSystem
 
 
@@ -286,36 +286,33 @@ class AppWindowRedesigned(ctk.CTk):
             parent.grid_columnconfigure(i, weight=1)
         parent.grid_rowconfigure(0, weight=1)
         
-        # CPU Chart with enhanced styling
-        self.cpu_chart = EnhancedChartPanel(
+        # CPU Chart with working functionality
+        self.cpu_chart = ChartPanel(
             parent, 
-            "CPU USAGE", 
-            DesignSystem.ACCENT_PRIMARY,
-            "🔥"
+            "CPU USAGE (%)", 
+            "#00BFFF"
         )
         self.cpu_chart.grid(row=0, column=0, padx=DesignSystem.SPACING_MD, pady=DesignSystem.SPACING_MD, sticky='nsew')
         
-        # Memory Chart with enhanced styling
-        self.memory_chart = EnhancedChartPanel(
+        # Memory Chart with working functionality
+        self.memory_chart = ChartPanel(
             parent,
-            "MEMORY USAGE", 
-            DesignSystem.ACCENT_TERTIARY,
-            "💾"
+            "MEMORY USAGE (MB)", 
+            "#FF6B6B"
         )
         self.memory_chart.grid(row=0, column=1, padx=DesignSystem.SPACING_MD, pady=DesignSystem.SPACING_MD, sticky='nsew')
         
-        # Battery Chart with enhanced styling
-        self.battery_chart = EnhancedChartPanel(
+        # Battery Chart with working functionality
+        self.battery_chart = ChartPanel(
             parent,
-            "BATTERY LEVEL",
-            DesignSystem.ACCENT_SUCCESS,
-            "🔋"
+            "BATTERY LEVEL (%)",
+            "#50FA7B"
         )
         self.battery_chart.grid(row=0, column=2, padx=DesignSystem.SPACING_MD, pady=DesignSystem.SPACING_MD, sticky='nsew')
         
     def _build_results_panel(self, parent):
         """Build spectacular results panel with modern styling"""
-        self.results_frame = ctk.CTkFrame(
+        self.bottom_frame = ctk.CTkFrame(
             parent,
             fg_color=DesignSystem.PRIMARY_MEDIUM,
             corner_radius=DesignSystem.RADIUS_XL
@@ -323,7 +320,7 @@ class AppWindowRedesigned(ctk.CTk):
         # Don't pack initially - will be shown after test completes
         
         # Results container
-        results_container = ctk.CTkFrame(self.results_frame, fg_color="transparent")
+        results_container = ctk.CTkFrame(self.bottom_frame, fg_color="transparent")
         results_container.pack(fill='x', padx=DesignSystem.SPACING_LG, pady=DesignSystem.SPACING_LG)
         
         # Results header
@@ -421,6 +418,7 @@ class AppWindowRedesigned(ctk.CTk):
             command=self._export_report
         )
         self.export_btn.pack(side='left', padx=DesignSystem.SPACING_SM)
+        print(f"DEBUG: Export button created: {hasattr(self, 'export_btn')}")
         
         # Reset button
         self.reset_btn = ctk.CTkButton(
@@ -494,7 +492,7 @@ class AppWindowRedesigned(ctk.CTk):
         self.process_dropdown.configure(state='disabled')
         
         # Hide results if visible
-        self.results_frame.pack_forget()
+        self.bottom_frame.pack_forget()
         
     def _stop_monitoring(self):
         """Stop monitoring and display spectacular results"""
@@ -533,7 +531,7 @@ class AppWindowRedesigned(ctk.CTk):
                 memory_data = self.monitor.memory_readings.copy()
                 battery_data = [b if b is not None else 0 for b in self.monitor.battery_readings]
                 
-                # Update enhanced charts
+                # Update charts with original working method
                 self.cpu_chart.update_chart(cpu_data, "CPU (%)")
                 self.memory_chart.update_chart(memory_data, "Memory (MB)")
                 self.battery_chart.update_chart(battery_data, "Battery (%)")
@@ -591,8 +589,11 @@ class AppWindowRedesigned(ctk.CTk):
                 'timestamps': self.monitor.timestamps
             }
             
-            # Show spectacular results panel
-            self.results_frame.pack(fill='x', pady=(DesignSystem.SPACING_MD, 0))
+            # Show results panel
+            print("DEBUG: Showing results panel with export button")
+            self.bottom_frame.pack(fill='x', pady=(DesignSystem.SPACING_MD, 0))
+            print(f"DEBUG: Results panel visible: {self.bottom_frame.winfo_manager() != ''}")
+            print(f"DEBUG: Export button visible: {hasattr(self, 'export_btn') and self.export_btn.winfo_manager() != ''}")
             
             # Update button states
             self.start_btn.configure(state='normal')
@@ -616,7 +617,17 @@ class AppWindowRedesigned(ctk.CTk):
                 self.last_readings
             )
             
-            messagebox.showinfo("Success", f"Report saved to: {txt_path}")
+            # Get absolute path for better user feedback
+            import os
+            abs_path = os.path.abspath(txt_path)
+            
+            # Detailed confirmation message
+            message = f"✅ Reports generated and saved successfully!\n\n"
+            message += f"📄 Text Report: {os.path.basename(txt_path)}\n"
+            message += f"📊 CSV Report: {os.path.basename(txt_path.replace('.txt', '.csv'))}\n\n"
+            message += f"📍 Location: {abs_path}"
+            
+            messagebox.showinfo("Export Complete", message)
             
         except Exception as e:
             messagebox.showerror("Error", f"Failed to export report: {str(e)}")
@@ -624,7 +635,7 @@ class AppWindowRedesigned(ctk.CTk):
     def _reset_ui(self):
         """Reset the UI to initial state"""
         # Hide results panel
-        self.results_frame.pack_forget()
+        self.bottom_frame.pack_forget()
         
         # Reset status
         self.status_dot.configure(text_color=DesignSystem.STATUS_IDLE)

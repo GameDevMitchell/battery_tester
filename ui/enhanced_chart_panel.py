@@ -297,6 +297,11 @@ class EnhancedChartPanel(ctk.CTkFrame):
         
         # Refresh canvas with smooth animation
         self.canvas.draw()
+        self.canvas.flush_events()  # Ensure immediate update
+        
+        # Force GUI update
+        self.canvas.update()
+        self.canvas.update_idletasks()
         
     def animate_data_transition(self, old_data: List[float], new_data: List[float], steps: int = 10):
         """

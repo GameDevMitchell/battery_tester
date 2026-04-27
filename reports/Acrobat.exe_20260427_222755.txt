@@ -1,0 +1,44 @@
+============================================
+   BATTERY PERFORMANCE TEST REPORT
+============================================
+App Tested     : Acrobat.exe
+Test Duration  : 30 seconds
+Test Date/Time : 2026-04-27 22:27:55
+
+--- SYSTEM METRICS SUMMARY ---
+Average CPU Usage  : 0.41%
+Peak CPU Usage     : 3.1%
+Average Memory     : 10.88 MB
+Peak Memory        : 10.8828125 MB
+Battery (Start)    : 43%
+Battery (End)      : 43%
+Battery Drain      : 0%
+
+--- IMPACT SCORES ---
+CPU Impact     : Low
+Memory Impact  : Low
+Battery Impact : Low
+OVERALL SCORE  : 🟢 Low Impact
+
+--- RECOMMENDATION ---
+This app is battery-friendly. Safe to run in the background.
+
+--- RAW READINGS ---
+Timestamp   | CPU (%)  | Memory (MB) | Battery (%)
+----------- | -------- | ----------- | -----------
+22:26:11    |      0.0 |        10.9 | 43.0       
+22:26:14    |      3.1 |        10.9 | 43.0       
+22:26:17    |      0.0 |        10.9 | 43.0       
+22:26:20    |      0.0 |        10.9 | 43.0       
+22:26:23    |      0.0 |        10.9 | 43.0       
+22:26:26    |      0.0 |        10.9 | 43.0       
+22:26:29    |      0.0 |        10.9 | 43.0       
+22:26:32    |      0.0 |        10.9 | 43.0       
+22:26:35    |      0.0 |        10.9 | 43.0       
+22:26:38    |      0.0 |        10.9 | 43.0       
+22:26:41    |      0.0 |        10.9 | 43.0       
+22:26:44    |      1.5 |        10.9 | 43.0       
+22:26:47    |      1.6 |        10.9 | 43.0       
+22:26:50    |      0.0 |        10.9 | 43.0       
+22:26:53    |      0.0 |        10.9 | 43.0       
+============================================
