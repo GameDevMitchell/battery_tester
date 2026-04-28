@@ -1,6 +1,4 @@
-# main.py
-# Entry point for the spectacular Battery Performance Tester application.
-# Run this file to launch the professional GUI with modern design.
+
 
 from ui.app_window_working import AppWindowWorking
 
